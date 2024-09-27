@@ -1,6 +1,6 @@
 #include "ili9341_LPC4337_patch.h"  // Incluye el archivo de cabecera correspondiente
 
-
+#define TICKRATE_HZ (1000)
 
 void ili9341_gpio_init(void){
     gpioConfig(CS_PIN, GPIO_OUTPUT);        //esto lo hice basándome en el ejemplo de examples>c>sapi>gpio>switches_leds
@@ -8,7 +8,15 @@ void ili9341_gpio_init(void){
     gpioConfig(RST_PIN, GPIO_OUTPUT);
    
    SystemCoreClockUpdate();
-   SysTick_Config(SystemCoreClock / 204000);       //examplers>c>lpc_open>lpc_open_basic_example
+   SysTick_Config(SystemCoreClock / TICKRATE_HZ); // examplers>c>lpc_open>lpc_open_basic_example
+}
+
+/* 1MS Timer callback */
+void SysTick_Handler(void)
+{
+    /* Update Display driver timers. */
+
+    ili9341_1ms_timer_cb();
 }
 
 void ili9341_spi_init(void){
@@ -58,8 +66,6 @@ int spi_tx_dma_b(const uint8_t* data, uint32_t len) {
     else return 1; //Fail
 }
 
-//a implementar
-
 bool spi_tx_dma_ready(void) {
     //en página 1174 del datasheet
 
@@ -68,9 +74,3 @@ bool spi_tx_dma_ready(void) {
     // return (LPC_SSP1->SR & SPI_SR_TNF) != 0; // Ejemplo: Verifica la bandera de no lleno
 }
 
-/* 1MS Timer callback */
-void SysTick_Handler(void){
-	/* Update Display driver timers. */
-   
-	ili9341_1ms_timer_cb();
-}
