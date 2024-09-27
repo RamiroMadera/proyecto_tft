@@ -6,9 +6,11 @@
 
 int main(void) {
 
+    boardConfig();
     ili9341_gpio_init();
+    ili9341_spi_init();
 
-    // Inicialización y configuración del display ILI9341
+    // Inicializaciï¿½n y configuraciï¿½n del display ILI9341
     ili9341_desc_ptr_t display;
     const ili9341_cfg_t display_cfg = {
         .cs_pin = gpio_cs_pin,
@@ -31,9 +33,9 @@ int main(void) {
         Error_Handler();
     }
 
-    // Código de aplicación
+    // Cï¿½digo de aplicaciï¿½n
 
     while (1) {
-        // Código de la aplicación
+        // Cï¿½digo de la aplicaciï¿½n
     }
 }

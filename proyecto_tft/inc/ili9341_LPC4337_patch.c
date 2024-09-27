@@ -14,7 +14,15 @@ void ili9341_gpio_init(void){
 void ili9341_spi_init(void){
     spiConfig(SPI0);                       //esto lo hice basándome en el ejemplo de examples>c>sapi>spi>sd_card>fatfss_list
     tickConfig(10);
-    (...)       //HAY QUE COMPLETAR ESTO
+    tickCallbackSet(diskTickHook, NULL);
+    //FSSDC_InitSPI();                // puede que esto sea solo para leer SD cards examples\c\sapi\spi\sd_card\fatfs_log_time_stamp\src\sd_spi.c
+
+    Chip_SSP_DMA_Enable(LPC_SSP1); // libs\lpc_open\lpc_chip_43xx\inc\ssp_18xx_43xx.h
+}
+
+void diskTickHook(void *ptr)
+{
+    disk_timerproc(); // Disk timer process
 }
 
 void gpio_cs_pin(ili9341_gpio_pin_value_t value) {
@@ -53,8 +61,11 @@ int spi_tx_dma_b(const uint8_t* data, uint32_t len) {
 //a implementar
 
 bool spi_tx_dma_ready(void) {
+    //en página 1174 del datasheet
+
+
     // Código para verificar si el SPI está listo para transmitir
-    return (LPC_SPI->SR & SPI_SR_TNF) != 0; // Ejemplo: Verifica la bandera de no lleno
+    return (LPC_SSP1->SR & SPI_SR_TNF) != 0; // Ejemplo: Verifica la bandera de no lleno
 }
 
 /* 1MS Timer callback */

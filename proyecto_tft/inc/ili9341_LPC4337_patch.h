@@ -1,7 +1,7 @@
 #ifndef ILI9341_ILI9341_LPC4337_PATCH_H_
 #define ILI9341_ILI9341_LPC4337_PATCH_H_
 
-#include <sapi.h>
+#include "sapi.h"
 #include "ili9341.h"
 /*
 #include <stdint.h>
