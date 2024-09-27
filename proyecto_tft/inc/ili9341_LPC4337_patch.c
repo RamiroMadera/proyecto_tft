@@ -63,9 +63,9 @@ int spi_tx_dma_b(const uint8_t* data, uint32_t len) {
 bool spi_tx_dma_ready(void) {
     //en página 1174 del datasheet
 
-
     // Código para verificar si el SPI está listo para transmitir
-    return (LPC_SSP1->SR & SPI_SR_TNF) != 0; // Ejemplo: Verifica la bandera de no lleno
+    return (Chip_SSP_GetStatus(LPC_SSP1, SSP_STAT_TNF) == SET);         // line160 -->  \libs\lpc_open\lpc_chip_43xx\src\ssp_18xx_43xx.c
+    // return (LPC_SSP1->SR & SPI_SR_TNF) != 0; // Ejemplo: Verifica la bandera de no lleno
 }
 
 /* 1MS Timer callback */
